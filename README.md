@@ -7,4 +7,7 @@
 - angular 6
 
 ## demo
-- user login
+- Steps: front-end: npm install
+                    npm start
+         back-end:  mvn spring-boot:run
+  App launch: http://localhost:3000/
