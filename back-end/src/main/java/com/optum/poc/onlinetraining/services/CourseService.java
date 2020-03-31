@@ -34,9 +34,19 @@ public class CourseService {
 		User user = userRepository.findOne(Long.valueOf(userCourse.getId()));
 		System.out.println("***user"+user);
 		Course course = courseRepo.findOne(userCourse.getCouserId());
-		course.setUser(user);
+		course.getUsers().add(user);
+		user.getCourses().add(course);
 		System.out.println("***course"+course.toString());
-		return courseRepo.save(course);
+		userRepository.save(user);
+		return course;
+	}
+
+	public Course findByCourseId(Long courseId) {
+		return  courseRepo.findOne(courseId);
+	}
+
+	public List<Course> findAllByUser(Long userId) {
+		return courseRepo.findByUsers_id(userId);
 	}
 
 }

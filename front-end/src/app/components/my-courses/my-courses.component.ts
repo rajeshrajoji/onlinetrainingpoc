@@ -16,10 +16,8 @@ export class MyCoursesComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    //console.log("this.currentUser :"+this.currentUser);
-    console.log(JSON.stringify(this.currentUser));
-    this.coursesService.getUser(parseInt(this.currentUser.id)).subscribe(u => {
-         this.courses = u.courses;
+    this.coursesService.getCourses(parseInt(this.currentUser.id)).subscribe(u => {
+         this.courses = u;
     });
 
   }

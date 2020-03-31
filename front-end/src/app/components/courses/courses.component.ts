@@ -35,4 +35,12 @@ export class CoursesComponent implements OnInit {
         });
     }
   }
+  viewCourse(id:any, name:any) {
+    let navigationExtras: NavigationExtras = {
+            queryParams: {
+                "course": id
+            }
+    };
+    this.router.navigate(['view'], navigationExtras);
+  }
 }

@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.optum.poc.onlinetraining.entities.Course;
-import com.optum.poc.onlinetraining.entities.User;
 import com.optum.poc.onlinetraining.entities.UserCourse;
 import com.optum.poc.onlinetraining.services.CourseService;
-import com.optum.poc.onlinetraining.services.UserService;
 
 @RestController
 @RequestMapping("course")
@@ -24,13 +22,18 @@ public class CourseController {
 	CourseService courseService;
 	
 
-	@Autowired
-	private UserService userService;
 
 	@CrossOrigin
 	@RequestMapping(value = "/courses", method = RequestMethod.GET)
 	public List<Course> getUserCourses() {
 	     return courseService.findAllCourses();
+	}
+	
+	
+	@CrossOrigin
+	@RequestMapping(value = "/courseInfo/{courseId}", method = RequestMethod.GET)
+	public Course getUserCoursesByCourseId(@PathVariable Long courseId) {
+	     return courseService.findByCourseId(courseId);
 	}
 	
 	@CrossOrigin
@@ -40,9 +43,9 @@ public class CourseController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
-	public User getUser(@PathVariable Long userId) {
-		return userService.find(userId);
+	@RequestMapping(value = "/getUserInfo/{userId}", method = RequestMethod.GET)
+	public List<Course> getUser(@PathVariable Long userId) {
+		return courseService.findAllByUser(userId);
 	}
 
 }

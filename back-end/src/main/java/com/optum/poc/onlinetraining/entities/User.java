@@ -18,11 +18,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,12 +35,17 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 /**
  * Description of User.
  * 
- * @author kamal berriga
+ * 
  */
 @Entity
-@Table(name="User")
+@Table(name="users")
 @Scope("session")
-public  class User implements UserDetails{
+public  class User implements UserDetails {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3335177629103095759L;
+
 	public static enum Role{ USER }
 	/**
 	 * Description of the property id.
@@ -154,9 +159,16 @@ public  class User implements UserDetails{
 	public Long getId() {
 		return id;
 	}
-	//
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "user")
-	@Fetch(FetchMode.JOIN) 
+
+	@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+    @JoinTable(name = "user_courses",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "course_id") })
+	@JsonIgnore
 	private Set<Course> courses = new HashSet<>();
 
 	public Set<Course> getCourses() {
@@ -167,9 +179,7 @@ public  class User implements UserDetails{
 		this.courses = courses;
 	}
 	
-	//
-	
-	
+		
 	
 	
 }

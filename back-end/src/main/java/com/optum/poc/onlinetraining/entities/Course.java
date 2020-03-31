@@ -1,24 +1,29 @@
 package com.optum.poc.onlinetraining.entities;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "course")
-public class Course {
+@Table(name = "courses")
+public class Course implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1190490253693716460L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +32,37 @@ public class Course {
 	@NotNull
 	private String name;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
-	@JoinColumn(name = "user_id", nullable = true)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	private String description;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "courses")
 	@JsonIgnore
-	private User user;
+	private Set<User> users = new HashSet<>();
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public Long getId() {
 		return id;
@@ -41,20 +72,8 @@ public class Course {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
+	public Course() {
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 }

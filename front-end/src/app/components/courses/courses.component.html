@@ -16,7 +16,7 @@
                 <tr *ngFor="let course of courses | async">
                     <td>{{course.id}}</td>
                     <td>{{course.name}}</td>
-                    <td><button (click)="enroll(course.id, course.name)">Enroll</button></td>
+                    <td><button (click)="viewCourse(course.id, course.name)">View Course</button></td>
                 </tr>
             </tbody>
         </table>

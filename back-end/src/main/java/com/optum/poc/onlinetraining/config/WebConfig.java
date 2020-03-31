@@ -10,17 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.optum.poc.onlinetraining.services.AppUserDetailsService;
 
-/**
- * @author kamal berriga
- *
- */
 @Configurable
 @EnableWebSecurity
 // Modifying or overriding the default spring boot security.
@@ -61,13 +56,16 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
 	// We can specify our authorization criteria inside this method.
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
 		http.cors().and()
 		// starts authorizing configurations
 		.authorizeRequests()
 		// ignoring the guest's urls "
-		.antMatchers("/account/register","/account/login","/logout","not-found","/course/courses","/course/enroll","/course/getUserInfo","/console/**").permitAll()
+		.antMatchers("/account/register","/account/login","/logout","not-found","/course/courses","/course/enroll","/course/getUserInfo/**","/course/courseInfo/**","/h2-console/**").permitAll()
 		// authenticate all remaining URLS
-		.anyRequest().fullyAuthenticated().and()
+		.anyRequest().fullyAuthenticated()
+		.and().csrf().ignoringAntMatchers("/h2-console/**","/course/getUserInfo/**","/course/courseInfo/**").and()
       /* "/logout" will log the user out by invalidating the HTTP Session,
        * cleaning up any {link rememberMe()} authentication that was configured, */
 		.logout()
@@ -76,10 +74,12 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
         .and()
 		// enabling the basic authentication
 		.httpBasic().and()
+		
 		// configuring the session on the server
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
 		// disabling the CSRF - Cross Site Request Forgery
 		.csrf().disable();
+		
 	}
 
 }

@@ -32,15 +32,13 @@ export class AuthService {
 
 }
   public logIn(user: User) {
-    console.log(user);
     let headers = new HttpHeaders();
     headers.set('Accept', 'application/json');
     // creating base64 encoded String from user name and password
     const base64Credential: string = btoa( user.username + ':' + user.password);
-    headers.set( 'Authorization', 'Basic ' + base64Credential);
-    console.log(headers);
+  //  headers.set( 'Authorization', 'Basic ' + base64Credential);
     // const options = new RequestOptions();
-
+    localStorage.setItem('headers', JSON.stringify(headers));
     return this.http.get(AppComponent.API_URL + '/account/login', {headers: headers});
   }
 

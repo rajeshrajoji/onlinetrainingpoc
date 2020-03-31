@@ -37,7 +37,7 @@ public class UserService {
 		    Course cc = courseRepo.findOne((user.getCourses().iterator().next().getId()));
 		    c.setName(cc.getName());
 		    c.setId(cc.getId());
-		    c.setUser(user);
+		    c.getUsers().add(user);
 	 		courseService.saveCourse(c);
 	   }
 	   return user;

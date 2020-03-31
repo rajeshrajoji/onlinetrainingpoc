@@ -32,19 +32,14 @@ public class App implements CommandLineRunner{
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		User user = new User();
-		user.setUsername("rajesh");
-		user.setPassword("rajesh");	
-		user.setRole("USER");
-		repo.save(user);
-		
+	
 		Course course = new Course();
-		course.setId(new Long(1));
 		course.setName("Java");
+		course.setDescription("Java is a general-purpose programming language that is class-based, object-oriented, and designed to have as few implementation dependencies as possible");
 		
 		Course course2 = new Course();
-		course2.setId(new Long(2));
 		course2.setName("Angular");
+		course2.setDescription("This course starts from scratch, you neither need to know Angular 1 nor Angular 2! Angular 9 simply is the latest version of Angular 2, you will learn this amazing framework from the ground up in this course!");
 		
 		List<Course> list = new ArrayList<>();
 		list.add(course2);
