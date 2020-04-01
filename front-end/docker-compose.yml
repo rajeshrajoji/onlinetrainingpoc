@@ -1,13 +1,14 @@
-version: "3"
+version: '3.7'
+
 services:
-  app:
-    build: .
-    command: "npm start"
-    ports:
-      - "4200:4200"
-      - "49153:49153"
-    expose:
-      - "4200"
-      - "49153"
+
+  example:
+    container_name: example
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - "./:/usr/app/"
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '4201:4200'
